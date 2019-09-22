@@ -22,6 +22,19 @@ const Image = styled.div`
 const StyledProgressBar = styled(ProgressBar)`
   position: absolute;
   bottom: 0;
+  display: ${props => props.show > 0 ? 'block' : 'none'};
+`;
+
+const Button = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: ${props => props.show > 0 ? 'block' : 'none'};
+  background: #2374AB;
+  text-transform: uppercase;
+  color: white;
+  border: none;
+  padding: 8px; 
 `;
 
 const LOADING_TIME = 3 * 1000;
@@ -41,6 +54,8 @@ function calcPercentage(percentage, interval) {
 
 function Main() {
     const [percentage, setPercentage] = useState(0);
+    const [showBar, setShowBar] = useState(1);
+    const [showBtn, setShowBtn] = useState(0);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -49,10 +64,18 @@ function Main() {
         return () => clearInterval(interval);
     }, []);
 
+    if (showBar && percentage >= 100) {
+        setTimeout(() => {
+            setShowBar(0);
+            setShowBtn(1);
+        }, 300);
+    }
+
     return (
         <Fragment>
             <Image/>
-            <StyledProgressBar percentage={percentage}/>
+            <StyledProgressBar percentage={percentage} show={showBar}/>
+            <Button show={showBtn}>Закрыть</Button>
         </Fragment>
     );
 }
