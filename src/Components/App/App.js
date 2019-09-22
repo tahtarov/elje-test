@@ -1,9 +1,18 @@
 import React from 'react';
+import styled from 'styled-components';
+
+import Main from '../Main/Main';
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 function App() {
   return (
-    <div className="app">
-    </div>
+    <Container className="app">
+      <Main/>
+    </Container>
   );
 }
 
