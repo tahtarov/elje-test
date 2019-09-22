@@ -13,24 +13,22 @@ const Filler = styled.div`
   transition: width .2s ease-in;
 `;
 
-export class ProgressBar extends Component {
-    static defaultProps = {
-        percentage: 0
-    };
-
-    render() {
-        const {percentage, className} = this.props;
+function ProgressBar(props) {
+        const {percentage, className} = props;
         return (
             <Bar className={className}>
                 <Filler percentage={`${percentage}%`}/>
             </Bar>
         );
-    }
 }
 
 ProgressBar.propTypes = {
     percentage: PropTypes.number,
     className: PropTypes.string
+};
+
+ProgressBar.defaultProps = {
+  percentage: 0
 };
 
 export default ProgressBar;

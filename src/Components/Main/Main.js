@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import styled from 'styled-components';
 
 import landscape from '../../static/images/landscape.png';
@@ -24,15 +24,37 @@ const StyledProgressBar = styled(ProgressBar)`
   bottom: 0;
 `;
 
-export class Main extends Component {
-    render() {
-        return (
-            <Fragment>
-                <Image/>
-                <StyledProgressBar percentage={10}/>
-            </Fragment>
-        );
+const LOADING_TIME = 3 * 1000;
+const INTERVAL = 100;
+const STEP = INTERVAL * 100 / LOADING_TIME;
+
+function calcPercentage(percentage, interval) {
+    if (percentage <= 100) {
+        percentage += STEP;
     }
+    if (percentage > 100) {
+        percentage = 100;
+        clearInterval(interval);
+    }
+    return percentage;
+}
+
+function Main() {
+    const [percentage, setPercentage] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPercentage(percentage => calcPercentage(percentage, interval));
+        }, INTERVAL);
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <Fragment>
+            <Image/>
+            <StyledProgressBar percentage={percentage}/>
+        </Fragment>
+    );
 }
 
 export default Main;
